@@ -2,7 +2,7 @@
 import unittest
 import tempfile
 import pytest
-from mockito import when, unstub, verify
+#from mockito import when, unstub, verify
 import builtins
 
 def test_one():
