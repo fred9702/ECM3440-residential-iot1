@@ -3,5 +3,4 @@ CounterFit
 counterfit-connection
 counterfit-shims-grove
 pytest
-mock
 mockito
