@@ -11,6 +11,9 @@ class AzureIoTClient():
 
     def __init__(self, connection_string) -> None:
         self.connection_string = connection_string
+        self.client = self.connect()
+        self.ADC = ADC()
+        self.relay = GroveRelay(5)
 
     def connect(connection_string):
 
@@ -19,6 +22,18 @@ class AzureIoTClient():
             print('Connecting')
             device_client.connect()
             print('Connected')
-            return device_client.connect()
+            self.client = device_client
+            return self.client
         except Exception:
             raise Exception('Unable to connect...')
+
+    def handle_method_request(self, request):
+        print("Direct method received - ", request.name)
+        
+        if request.name == "relay_on":
+            self.relay.on()
+        elif request.name == "relay_off":
+            self.relay.off()
+
+        method_response = MethodResponse.create_from_method_request(request, 200)
+        self.client.send_method_response(method_response)
