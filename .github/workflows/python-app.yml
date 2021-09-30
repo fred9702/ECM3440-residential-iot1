@@ -27,7 +27,7 @@ jobs:
         pip install -r soil-moisture-sensor/requirements.txt
     - name: Report on code efficiency
       run: |
-        python -m radon cc ".\app.py"
+        python -m radon cc "soil-moisture-sensor/app.py"
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
