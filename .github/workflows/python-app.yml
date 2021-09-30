@@ -24,7 +24,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest
-        pip install -r soil-moisture-sensor/requirements.
+        pip install -r soil-moisture-sensor/requirements
     - name: Report on code efficiency
       run: |
         python -m radon cc ".\app.py"
