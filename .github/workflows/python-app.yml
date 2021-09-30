@@ -37,3 +37,8 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+    - name: Report on code efficiency
+      run: |
+        python -m radon cc ".\app.py"
+
+
