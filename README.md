@@ -34,6 +34,7 @@ Check that it is installed correctly.
 ```sh
 python3 -m CounterFit
 ```
+(or) python -m CounterFit
 
 Quit by typing CRTL-C in the terminal.
 
