@@ -44,5 +44,6 @@ def main():
         readADC()
         time.sleep(10)
 
-device_client = iotHubConnection()
-main()
+if __name__ == "__main__":
+    device_client = iotHubConnection()
+    main()
