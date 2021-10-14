@@ -16,7 +16,6 @@ def iot_hub_connection(connection_string):
     device_client = IoTHubDeviceClient.create_from_connection_string(connection_string)
 
     print('Connecting')
-    print(device_client + "test version")
     device_client.connect()
     print('Connected')
     return device_client
