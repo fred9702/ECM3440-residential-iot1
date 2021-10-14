@@ -1,5 +1,9 @@
 # Running locally with a python virtual environment
 
+### Install venv globally (if not already intalled)
+
+pip install venv
+
 ### Create virutal environment
 
 python3 -m venv .venv
