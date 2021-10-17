@@ -9,7 +9,7 @@ from counterfit_shims_grove.grove_relay import GroveRelay
 from counterfit_connection import CounterFitConnection
 
 load_dotenv()
-# Extract environment variables into Python variables. 
+# Extract environment variables into Python variables.
 # Now these don't need to be changed for each environment.
 COUNTERFIT_HOST = os.getenv('COUNTERFIT_HOST')
 COUNTERFIT_PORT = os.getenv('COUNTERFIT_PORT')
@@ -28,14 +28,17 @@ IOT_HUB_CONNECTION_STRING = os.getenv('IOT_HUB_CONNECTION_STRING')
 adc = ADC()
 relay = GroveRelay(RELAY_PIN)
 
+
 # Establish connection with CounterFit App
 def counterfit_connection():
+    logging.info("Connecting to CounterFit")
     CounterFitConnection.init(COUNTERFIT_HOST, COUNTERFIT_PORT)
 
-# Establish connection with Azure IoT Hub
-def iot_hub_connection(): 
-    device_client = IoTHubDeviceClient.create_from_connection_string(IOT_HUB_CONNECTION_STRING)
 
+# Establish connection with Azure IoT Hub
+def iot_hub_connection():
+    device_client = IoTHubDeviceClient.\
+        create_from_connection_string(IOT_HUB_CONNECTION_STRING)
     print('Connecting')
     print(device_client.connect())
     print('Connected')
@@ -53,6 +56,7 @@ def handle_method_request(request, device_client):
     method_response = MethodResponse.create_from_method_request(request, 200)
     device_client.send_method_response(method_response)
 
+
 # Read values from virtual sensor.
 def read_adc(device_client):
     soil_moisture = adc.read(GPIO_PIN)
@@ -61,9 +65,9 @@ def read_adc(device_client):
     message = Message(json.dumps({'soil_moisture': soil_moisture}))
     device_client.send_message(message)
 
-def run(device_client): 
+
+def run(device_client):
     device_client.on_method_request_received = handle_method_request
     while True:
         read_adc(device_client)
         time.sleep(2)
-
