@@ -1,7 +1,8 @@
 from ..components import sensor
-
+from mockito import unstub
 from unittest.mock import patch
 from azure.iot.device import IoTHubDeviceClient
+from counterfit_connection import CounterFitConnection
 
 @patch.object(IoTHubDeviceClient, 'create_from_connection_string')
 @patch.object(IoTHubDeviceClient, 'connect')
@@ -13,6 +14,13 @@ def test_succesful_iot_hub_connection(connect, create_from_connection_string):
     client = sensor.iot_hub_connection()
     print(f'Connected: {client.connected}')
     assert client is IoTHubDeviceClient
+
+
+@patch.object(CounterFitConnection, 'init')
+def test_counterfit_connection(init):
+    init.return_value = None
+    assert sensor.counterfit_connection() is None
+    unstub()
 
 # # import mockito
 # # from unittest import TestCase
