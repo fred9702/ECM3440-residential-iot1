@@ -1,7 +1,10 @@
 from ..components import sensor
 from mockito import unstub
 from unittest.mock import patch
+from mockito import when, unstub, verify
 from azure.iot.device import IoTHubDeviceClient
+from counterfit_shims_grove.adc import ADC
+import json
 from counterfit_connection import CounterFitConnection
 
 @patch.object(IoTHubDeviceClient, 'create_from_connection_string')
@@ -14,6 +17,26 @@ def test_succesful_iot_hub_connection(connect, create_from_connection_string):
     client = sensor.iot_hub_connection()
     print(f'Connected: {client.connected}')
     assert client is IoTHubDeviceClient
+    unstub()
+
+def test_null_return_from_adc():
+    when(sensor).read_adc(IoTHubDeviceClient).thenReturn(None)
+    sensor.read_adc(IoTHubDeviceClient)
+    assert sensor.read_adc(IoTHubDeviceClient) is None
+    unstub()
+
+
+@patch.object(ADC, 'read')
+@patch.object(IoTHubDeviceClient, 'send_message')
+@patch.object(json, 'dumps')
+def test_successful_read_from_adc(read, send_message, dumps):
+    device_client = IoTHubDeviceClient
+    read.return_value = 2
+    dumps.return_value = None
+    sensor.read_adc(device_client)
+    assert sensor.read_adc(IoTHubDeviceClient) is None
+    unstub()
+
 
 
 @patch.object(CounterFitConnection, 'init')
