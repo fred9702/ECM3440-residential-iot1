@@ -42,7 +42,9 @@ jobs:
         pytest
 
   image-build:
-  
+    runs-on: ubuntu-latest
+
+    steps:
     - name: 'Build and push image'
       uses: azure/docker-login@v1
       with:
