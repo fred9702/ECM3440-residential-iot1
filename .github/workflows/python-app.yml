@@ -51,7 +51,7 @@ jobs:
         login-server: ${{ secrets.PROSPERITY_CR }}
         username: ${{ secrets.PROSPERITY_CR_USERNAME }}
         password: ${{ secrets.PROSPERITY_CR_PASSWORD }}
-      working-directory: ./ECM3440-residential-iot1
     - run: |
+        ls -a
         docker build . -t ${{ secrets.PROSPERITY_CR }}/prosperity:${{ github.sha }}
         docker push ${{ secrets.PROSPERITY_CR }}/prosperity:${{ github.sha }}
