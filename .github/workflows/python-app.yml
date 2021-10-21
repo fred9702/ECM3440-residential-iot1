@@ -7,10 +7,10 @@ on:
   push:
     branches: [ main, develop, feature/* ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop, feature/* ]
 
 jobs:
-  build:
+  python-build:
 
     runs-on: ubuntu-latest
 
@@ -40,6 +40,19 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+
+  image-build:
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-
-
+    - name: 'Build and push image'
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ secrets.PROSPERITY_CR }}
+        username: ${{ secrets.PROSPERITY_CR_USERNAME }}
+        password: ${{ secrets.PROSPERITY_CR_PASSWORD }}
+    - run: |
+        docker build . -t ${{ secrets.PROSPERITY_CR }}/prosperity:${{ github.sha }}
+        docker push ${{ secrets.PROSPERITY_CR }}/prosperity:${{ github.sha }}
