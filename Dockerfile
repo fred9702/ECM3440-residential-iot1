@@ -1,8 +1,8 @@
 FROM python:3.9
 
-COPY prosperity /home/prosperity
+COPY prosperity /prosperity
  
-WORKDIR /home/prosperity
+WORKDIR /prosperity
 
 RUN pip install -r requirements-prosperity.txt
 

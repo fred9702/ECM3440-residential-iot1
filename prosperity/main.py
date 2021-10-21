@@ -1,5 +1,5 @@
 import logging
-from .components.sensor import counterfit_connection, iot_hub_connection, run
+from components.sensor import counterfit_connection, iot_hub_connection, run
 
 # Set up logger
 logging.basicConfig(format='%(asctime)s %(levelname)s: \
