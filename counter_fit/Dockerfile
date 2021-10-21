@@ -1,9 +1,11 @@
 FROM python:3.9
 
-COPY requirements-counter_fit.txt .
+COPY counterfit-app /counterfit-app
 
-RUN pip install -r requirements-counter_fit.txt
+WORKDIR /counterfit-app
+
+RUN pip install -r requirements.txt
 
 EXPOSE 5000
 
-ENTRYPOINT python3 -m CounterFit
+ENTRYPOINT python3 src/__main__.py
