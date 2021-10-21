@@ -10,10 +10,6 @@ on:
     branches: [ main, develop, feature/* ]
 
 jobs:
-  defaults:
-    run: 
-      working-directory: /ECM3440-residential-iot1
-
   python-build:
 
     runs-on: ubuntu-latest
@@ -28,16 +24,16 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest
-        pip install -r prosperity/requirements-prosperity.txt
+        pip install -r requirements-prosperity.txt
     - name: Report on code efficiency
       run: |
         python -m radon cc "prosperity/components/sensor.py"
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
-        flake8 prosperity/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 prosperity/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test coverage
       run: |
         pytest --cov="." prosperity/tests
@@ -57,4 +53,5 @@ jobs:
         password: ${{ secrets.PROSPERITY_CR_PASSWORD }}
     - run: |
         docker build . -t ${{ secrets.PROSPERITY_CR }}/prosperity:${{ github.sha }}
-        docker push ${{ secrets.PROSPERITY_CR }}/prosperity:${{ github.sha }}
+        docker push ${{ secrets.PROSPERITY_CR }}/prosperity:${{ github.sha }} *
+    - working-directory: ./ECM3440-residential-iot1
