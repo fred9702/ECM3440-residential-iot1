@@ -30,16 +30,26 @@ relay = GroveRelay(RELAY_PIN)
 
 # Establish connection with CounterFit App
 def counterfit_connection():
-    CounterFitConnection.init(COUNTERFIT_HOST, COUNTERFIT_PORT)
+    try:
+        CounterFitConnection.init(COUNTERFIT_HOST, COUNTERFIT_PORT)
+    except Exception as counterfitException: 
+         logging.info("CounterFit Connection not Established")
+         logging.info(counterfitException)
+
 
 # Establish connection with Azure IoT Hub
 def iot_hub_connection(): 
-    device_client = IoTHubDeviceClient.create_from_connection_string(IOT_HUB_CONNECTION_STRING)
+    try:
+        device_client = IoTHubDeviceClient.create_from_connection_string(IOT_HUB_CONNECTION_STRING)
 
-    print('Connecting')
-    print(device_client.connect())
-    print('Connected')
-    return device_client
+        print('Connecting')
+        print(device_client.connect())
+        print('Connected')
+        return device_client
+    except Exception as iotHubException:
+        logging.info("IoT Hub Connection not Established")
+        logging.info(iotHubException)
+        return
 
 
 def handle_method_request(request, device_client):
