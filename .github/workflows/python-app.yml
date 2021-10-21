@@ -46,7 +46,7 @@ jobs:
 
     steps:
     - name: 'Build and push image'
-      workflow-directory: ./ECM3440-residential-iot1
+      working-directory: ./ECM3440-residential-iot1
       uses: azure/docker-login@v1
       with:
         login-server: ${{ secrets.PROSPERITY_CR }}
