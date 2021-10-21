@@ -1,5 +1,5 @@
 from ..components import sensor
-
+from mockito import unstub
 from unittest.mock import patch
 from mockito import when, unstub, verify
 from azure.iot.device import IoTHubDeviceClient
@@ -37,6 +37,13 @@ def test_successful_read_from_adc(read, send_message, dumps):
     assert sensor.read_adc(IoTHubDeviceClient) is None
     unstub()
 
+
+
+@patch.object(CounterFitConnection, 'init')
+def test_counterfit_connection(init):
+    init.return_value = None
+    assert sensor.counterfit_connection() is None
+    unstub()
 
 # # import mockito
 # # from unittest import TestCase
