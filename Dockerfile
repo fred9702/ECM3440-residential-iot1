@@ -1,6 +1,6 @@
 FROM python:3.9
 
-COPY . /prosperity
+COPY prosperity /prosperity
  
 WORKDIR /prosperity
 
