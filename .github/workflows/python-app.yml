@@ -53,5 +53,5 @@ jobs:
         username: ${{ secrets.PROSPERITY_CR_USERNAME }}
         password: ${{ secrets.PROSPERITY_CR_PASSWORD }}
     - run: |
-        docker build -t ${{ secrets.PROSPERITY_CR }}/prosperity:${{ github.sha }} prosperity/Dockerfile 
+        docker build -t ${{ secrets.PROSPERITY_CR }}/prosperity:${{ github.sha }} --file /prosperity/Dockerfile 
         docker push ${{ secrets.PROSPERITY_CR }}/prosperity:${{ github.sha }}
