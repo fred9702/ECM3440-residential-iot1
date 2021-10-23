@@ -67,4 +67,19 @@ jobs:
         docker push ${{ secrets.PROSPERITY_CR }}/prosperity:${{ github.sha }}
 
   deploy-aci:
+    runs-on: ubuntu-latest
+    needs: python-build, image-build
+
+    steps:
     
+     - name: 'Deploy to Azure Container Instances'
+          uses: 'azure/aci-deploy@v1'
+          with:
+            resource-group: ${{ secrets.RESOURCE_GROUP }}
+            dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+            image: ${{ secrets.PROSPERITY_CR }}/prosperity:${{ github.sha }}
+            registry-login-server: ${{ secrets.PROSPERITY_CR }}
+            registry-username: ${{ secrets.PROSPERITY_CR_USERNAME }}
+            registry-password: ${{ secrets.PROSPERITY_CR_PASSWORD }}
+            name: prosperity
+            location: 'UK South'
