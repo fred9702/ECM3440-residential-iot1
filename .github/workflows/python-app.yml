@@ -55,6 +55,7 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    # Automates az container create command 
     - name: 'Build and push image'
       uses: azure/docker-login@v1
       with:
