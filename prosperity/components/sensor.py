@@ -72,7 +72,6 @@ def handle_method_request(request, device_client):
                      method_response_exception)
 
 
-
 # Read values from virtual sensor.
 def read_adc(device_client):
     soil_moisture = None
