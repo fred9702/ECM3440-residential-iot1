@@ -41,6 +41,15 @@ jobs:
       run: |
         pytest
 
+
+name: Python Deploy
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
   image-build:
     runs-on: ubuntu-latest
 
