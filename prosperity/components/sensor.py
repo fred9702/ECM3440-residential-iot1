@@ -32,24 +32,23 @@ relay = GroveRelay(RELAY_PIN)
 def counterfit_connection():
     try:
         CounterFitConnection.init(COUNTERFIT_HOST, COUNTERFIT_PORT)
-    except Exception as counterfitException: 
-         logging.info("CounterFit Connection not Established")
-         logging.info(counterfitException)
+    except Exception as counterfit_exception: 
+         logging.info("CounterFit Connection not Established." + counterfit_exception)
 
 
 # Establish connection with Azure IoT Hub
 def iot_hub_connection(): 
+    device_client = None
     try:
         device_client = IoTHubDeviceClient.create_from_connection_string(IOT_HUB_CONNECTION_STRING)
-
         print('Connecting')
-        print(device_client.connect())
+        device_client.connect()
         print('Connected')
-        return device_client
-    except Exception as iotHubException:
-        logging.info("IoT Hub Connection not Established")
-        logging.info(iotHubException)
-        return
+
+    except Exception as iot_hub_exception:
+        logging.info("IoT Hub Connection not Established." + iot_hub_exception)
+    
+    return device_client
 
 
 def handle_method_request(request, device_client):
@@ -60,20 +59,36 @@ def handle_method_request(request, device_client):
     elif request.name == "relay_off":
         relay.off()
 
-    method_response = MethodResponse.create_from_method_request(request, 200)
-    device_client.send_method_response(method_response)
+    try: 
+        method_response = MethodResponse.create_from_method_request(request, 200)
+        device_client.send_method_response(method_response)
+    except Exception as method_response_exception: 
+        logging.info("Method Response Could Not Be Established." + method_response_exception)
 
 # Read values from virtual sensor.
 def read_adc(device_client):
-    soil_moisture = adc.read(GPIO_PIN)
-    print("Soil moisture:", soil_moisture)
+    soil_moisture = None
+    try:
+        soil_moisture = adc.read(GPIO_PIN)
+        print("Soil moisture:", soil_moisture)
+    except Exception as soil_moisture_exception: 
+        logging.info("Sensor Could Not Be Read." + soil_moisture_exception)
 
-    message = Message(json.dumps({'soil_moisture': soil_moisture}))
-    device_client.send_message(message)
+    return soil_moisture
+    
+
+def send_iot_message(soil_moisture, device_client):
+    try:
+        message = Message(json.dumps({'soil_moisture': soil_moisture}))
+        device_client.send_message(message)
+    except Exception as send_message_exception: 
+        logging.info("Data Could Not Be Sent." + send_message_exception)
+
 
 def run(device_client): 
     device_client.on_method_request_received = handle_method_request
     while True:
-        read_adc(device_client)
+        soil_moisture = read_adc()
+        send_iot_message(soil_moisture, device_client)
         time.sleep(2)
 
