@@ -87,4 +87,4 @@ jobs:
         registry-username: ${{ secrets.PROSPERITY_CR_USERNAME }}
         registry-password: ${{ secrets.PROSPERITY_CR_PASSWORD }}
         name: prosperity
-        location: 'UK South'
+        location: 'UK Sout'
