@@ -63,8 +63,8 @@ jobs:
         username: ${{ secrets.PROSPERITY_CR_USERNAME }}
         password: ${{ secrets.PROSPERITY_CR_PASSWORD }}
     - run: |
-        docker build . -t ${{ secrets.PROSPERITY_CR }}/prosperity_v1:${{ github.sha }} 
-        docker push ${{ secrets.PROSPERITY_CR }}/prosperity_v1:${{ github.sha }}
+        docker build . -t ${{ secrets.PROSPERITY_CR }}/prosperity:${{ github.sha }} 
+        docker push ${{ secrets.PROSPERITY_CR }}/prosperity:${{ github.sha }}
 
   deploy-aci:
     runs-on: ubuntu-latest
